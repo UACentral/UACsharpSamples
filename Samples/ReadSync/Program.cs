@@ -6,23 +6,19 @@ public static class Program
 {
     public static async Task Main(string[] args)
     {
-        var config = new ApplicationConfiguration
-        {
-            ApplicationName = "OPC UA minimal client Read Sync",
-            ApplicationType = ApplicationType.Client,
-        };
-        var clientConfig = new ClientConfiguration
-        {
-            DefaultSessionTimeout = 60000,
-        };
-        config.ClientConfiguration = clientConfig;
-
         ApplicationInstance appInst = new ApplicationInstance
         {
             ApplicationName = "OPC UA minimal client application instance",
             ApplicationType = ApplicationType.Client,
+            ApplicationConfiguration = new ApplicationConfiguration()
+            {
+                ApplicationName = "OPC UA minimal client Read Sync",
+                ApplicationType = ApplicationType.Client,
+                ClientConfiguration = new ClientConfiguration() {
+                    DefaultSessionTimeout = 60_000
+                }
+            }
         };
-        appInst.ApplicationConfiguration = config;
 
         Uri serverUrl = new Uri("opc.tcp://localhost:62541/Quickstarts/ReferenceServer");
         var endpointDescription = CoreClientUtils.SelectEndpoint(appInst.ApplicationConfiguration, serverUrl.ToString(), false);

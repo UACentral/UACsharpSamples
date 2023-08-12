@@ -1,6 +1,5 @@
 ﻿using Opc.Ua;
 using Opc.Ua.Client;
-using Opc.Ua.Configuration;
 
 public static class Program
 {

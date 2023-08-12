@@ -6,35 +6,30 @@ public static class Program
 {
     public static async Task Main(string[] args)
     {
-        ApplicationInstance appInst = new ApplicationInstance
+        var config = new ApplicationConfiguration()
         {
-            ApplicationName = "OPC UA minimal client application instance",
+            ApplicationName = "OPC UA minimal client Read Sync",
             ApplicationType = ApplicationType.Client,
-            ApplicationConfiguration = new ApplicationConfiguration()
+            ClientConfiguration = new ClientConfiguration()
             {
-                ApplicationName = "OPC UA minimal client Read Sync",
-                ApplicationType = ApplicationType.Client,
-                ClientConfiguration = new ClientConfiguration() {
-                    DefaultSessionTimeout = 60_000
-                }
+                DefaultSessionTimeout = 60_000
             }
         };
 
         Uri serverUrl = new Uri("opc.tcp://localhost:62541/Quickstarts/ReferenceServer");
-        var endpointDescription = CoreClientUtils.SelectEndpoint(appInst.ApplicationConfiguration, serverUrl.ToString(), false);
+        var endpointDescription = CoreClientUtils.SelectEndpoint(config, serverUrl.ToString(), false);
 
-        EndpointConfiguration endpointConfiguration = EndpointConfiguration.Create(appInst.ApplicationConfiguration);
+        EndpointConfiguration endpointConfiguration = EndpointConfiguration.Create(config);
         ConfiguredEndpoint endpoint = new ConfiguredEndpoint(null, endpointDescription, endpointConfiguration);
 
-        uint SessionLifeTime = 60 * 1000;
         var session = await Opc.Ua.Client.Session.Create(
-            appInst.ApplicationConfiguration,
+            config,
             null,
             endpoint,
             true,
             false,
-            appInst.ApplicationConfiguration.ApplicationName,
-            SessionLifeTime,
+            config.ApplicationName,
+            (uint)config.ClientConfiguration.DefaultSessionTimeout,
             new UserIdentity(),
             null
             ).ConfigureAwait(false);

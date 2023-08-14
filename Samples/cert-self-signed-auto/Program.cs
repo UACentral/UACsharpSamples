@@ -32,6 +32,10 @@ public static class Program
                 DefaultSessionTimeout = 60_000,
             },
             SecurityConfiguration = securityConfiguration,
+            CertificateValidator = new CertificateValidator()
+            {
+                AutoAcceptUntrustedCertificates = true,
+            }
         };
 
         CertificatePasswordProvider PasswordProvider = new CertificatePasswordProvider(null);
@@ -79,7 +83,7 @@ public static class Program
                     // BrowseName of ServerStatus_StartTime
                     new ReadValueId() { NodeId = Variables.Server_ServerStatus_StartTime, AttributeId = Attributes.BrowseName },
                     // Value of ServerStatus_StartTime
-                    new ReadValueId() { NodeId = Variables.Server_ServerStatus_StartTime, AttributeId = Attributes.Value }
+                    new ReadValueId() { NodeId = Variables.Server_ServerStatus_StartTime, AttributeId = Attributes.Value },
                 };
 
         session.Read(

@@ -7,6 +7,10 @@ public static class Program
 {
     public static async Task Main(string[] args)
     {
+        /*
+         * OPC Foundation .Net Standard gotcha
+         * Creating self signed certificate usng the factory certificate generator replaces "localhost" with machine name
+         */
         const string appName = "OPC UA minimal client self signed auto";
         const ApplicationType appType = ApplicationType.Client;
 
@@ -38,7 +42,10 @@ public static class Program
             CertificatePasswordProvider = PasswordProvider,
         };
         appInst.ApplicationConfiguration = config;
-        // check the application certificate.
+
+        // This call will check if application certificate exists, if not it creates self signed certificate.
+        // OPC Foundation's code has lots of side effects and names are not obvious
+        // this will update appInst.ApplicationConfiguration.SecurityConfiguration.ApplicationCertificate.Certificate
         bool haveAppCertificate = await appInst.CheckApplicationInstanceCertificate(false, minimumKeySize: 0).ConfigureAwait(false);
         if (!haveAppCertificate)
         {

@@ -4,5 +4,5 @@ OPC UA C# Samples applications
 ## [ReadSync](Samples/ReadSync)
 Minimal Read Service
 
-## [Self signed auto generate](Samples/cert-self-signed-auto)
+## Certificate - [Self signed auto generate](Samples/cert-self-signed-auto)
 Minimal client demonstrating auto generation of self signed certificate on start-up
